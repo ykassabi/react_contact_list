@@ -23,20 +23,12 @@ class App extends Component {
     }
     ]
   }
-  // removeContact= (contact) => {
-  //   this.setState((prevState)=>{
-  //     contacts : prevState.contacts.filter( c => c.id !== c.contact )
+  removeContact = (contact) => {
+    this.setState((currentState) => ({
+        contacts: currentState.contacts.filter((c) => {
+                              return c.id !== contact.id})
+  }))}
 
-  //   })
-  // }
-    removeContact = (contact) => {
-        this.setState((currentState) => ({
-
-                contacts: currentState.contacts.filter((c) => {
-                  return c.id !== contact.id})
-        }))
-
-  }
 
 
   render() {
