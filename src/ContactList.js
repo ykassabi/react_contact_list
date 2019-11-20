@@ -3,17 +3,29 @@ import PropTypes from 'prop-types';
 
 export class ContactList extends Component {
 
-    state={
+    state = {
         query: ''
     }
 
     updateQuery = (query) => {
         this.setState({query: query.trim()})
     }
-
+    clearQuery = () => {
+        this.updateQuery('')
+    }
 
 render(){
+    const { query } = this.state;
+    const { listAllContacts, onDelete } = this.props;
 
+    const showingFilteredContacts = (query === '')?
+        listAllContacts :
+        listAllContacts.filter((c) => (
+            c.name.toLowerCase().includes(query.toLowerCase())
+        ));
+
+        // console.log('>', typeof(showingFilteredContacts));
+        // console.log('line 29', typeof(listAllContacts));
     return (
         <div className='list-contacts'>
             <div className='list-contacts-top'>
@@ -21,13 +33,20 @@ render(){
                     type='text'
                     className='search-contacts'
                     placeholder='make a search'
-                    value={this.state.query}
+                    value={query}
                     onChange={(event)=>this.updateQuery(event.target.value)}
                 />
             </div>
-        <p>{this.state.query}</p>
+            {showingFilteredContacts.length !== listAllContacts.length && (
+                <div className='showing-contacts'>
+                    <span>Now showing {listAllContacts.length} of {showingFilteredContacts.length}</span>
+                    <button onClick={this.clearQuery}>Show all</button>
+                </div>
+            )}
+
         <ul className='contact-list'>
-            {this.props.list.map(i=> (
+
+            {showingFilteredContacts.map(i=> (
             <li key={i.id} className='contact-list-item'>
                 <div
                 className='contact-avatar'
@@ -38,7 +57,7 @@ render(){
                     <p>{i.name}</p>
                     <p>{i.handle}</p>
                 </div>
-                <button className="contact-remove" onClick={()=>this.props.onDelete(i)}>
+                <button className="contact-remove" onClick={()=>onDelete(i)}>
                     Remove
                 </button>
             </li>)
@@ -51,7 +70,7 @@ render(){
 }
 ContactList.propTypes = {
     onDelete : PropTypes.func.isRequired,
-    list: PropTypes.array.isRequired,
+    listAllContacts: PropTypes.array.isRequired,
 };
 
 export default ContactList;
