@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 
 export class ContactList extends Component {
 
@@ -36,7 +37,13 @@ render(){
                     value={query}
                     onChange={(event)=>this.updateQuery(event.target.value)}
                 />
+            <Link
+                to='/new'
+                className='add-contact'>
+                Add Contact
+            </Link>
             </div>
+
             {showingFilteredContacts.length !== listAllContacts.length && (
                 <div className='showing-contacts'>
                     <span>Now showing {listAllContacts.length} of {showingFilteredContacts.length}</span>
